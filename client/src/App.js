@@ -13,7 +13,14 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<p>hi</p>
+				{this.props.projects.map(project => {
+					return (
+						<div key={project.id}>
+							<h3>{project.name}</h3>
+							<p>{project.description}</p>
+						</div>
+					);
+				})}
 			</div>
 		);
 	}
