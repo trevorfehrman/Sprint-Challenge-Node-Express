@@ -112,6 +112,72 @@ server.get("/actions", async (req, res) => {
 	}
 });
 
+server.get("/actions/:id", async (req, res) => {
+	try {
+		let data = await actiondb.get(req.params.id);
+		if (data.id) {
+			return res.status(200).json(data);
+		}
+		return res.status(404).json({ message: "Bad request" });
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
+
+server.post("/actions", async (req, res) => {
+	if (!req.body.project_id || !req.body.description || !req.body.notes) {
+		return res
+			.status(400)
+			.json({ message: "One or more keys not recieved" });
+	}
+	try {
+		let data = await actiondb.insert(req.body);
+		return res.status(201).json({
+			id: data.id,
+			project_id: data.project_id,
+			description: data.description,
+			notes: data.notes,
+			completed: data.completed,
+		});
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
+
+server.put("/actions/:id", async (req, res) => {
+	try {
+		let data = await actiondb.update(req.params.id, req.body);
+		console.log(data);
+		if (data.id > 0) {
+			return res.json({
+				id: data.id,
+				project_id: data.project_id,
+				description: data.description,
+				notes: data.notes,
+				completed: data.completed,
+			});
+		} else {
+			return null;
+		}
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
+
+server.delete("/actions/:id", async (req, res) => {
+	try {
+		let data = await actiondb.remove(req.params.id);
+		if (data > 0) {
+			return res.status(200).json({ message: "Action removed" });
+		}
+		return res
+			.status(404)
+			.json({ message: "This action ID doesn't exist" });
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
+
 server.listen(6000, () =>
 	console.log("\n This server is listening on port 6k \n"),
 );
