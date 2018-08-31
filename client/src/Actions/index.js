@@ -4,7 +4,7 @@ export const FETCHING_PROJECTS = "FETCHING_PROJECTS";
 export const PROJECTS_FETCH_SUCCESS = "PROJECTS_FETCH_SUCCESS";
 export const PROJECTS_FETCH_FAILURE = "PROJECTS_FETCH_FAILURE";
 
-const PROJECT_URL = "http://localhost:6000/projects";
+const PROJECT_URL = "http://localhost:5000/project";
 
 export const fetchProjects = () => dispatch => {
 	dispatch({ type: FETCHING_PROJECTS });
